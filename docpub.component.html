@@ -1,0 +1,35 @@
+<style>
+    .pointer {
+        cursor: pointer;
+        cursor: hand;
+    }
+</style>
+<div *ngIf="showParent">
+    <h3>
+        <div class="form-inline">
+            <div class="form-group">
+                <label class="control-label">PID: </label>
+                <select class="form-control" [(ngModel)]="selectedPlanName">
+            <option>Select</option>            
+            <option>HUM</option>
+            <option>Test</option>
+        </select>
+            </div>
+            <button type="button" class="btn btn-success" (click)="getFileListing(selectedPlanName)" [disabled]="(selectedPlanName == undefined || selectedPlanName == 'Select')">Go</button>
+            <button type="button" class="btn btn-info" (click)="showParent = false;" [disabled]="(selectedPlanName == undefined || selectedPlanName == 'Select')">Upload a new document</button>
+        </div>
+    </h3>
+    <p [hidden]="(selectedPlanName != 'Select')" class="alert alert-warning">Please select plan to get started</p>
+    <as-filelisting></as-filelisting>
+</div>
+<div class="form-horizontal" *ngIf="!showParent">
+    <div class="col-md-12 alert alert-info"><strong>Plan Name : {{selectedPlanName}} <a (click)="showParent=true;selectedPlanName = 'Select';" class="pointer pull-right">Back to FileLisitng</a></strong></div>
+    <div class="col-sm-9">
+        <fieldset>
+            <legend>Document Details</legend>
+            <br>
+            <as-upload [(inputData)]="showParent" (outputEvent)="onComponentChange($event)">Loading ...</as-upload>
+        </fieldset>
+        <as-edit-category></as-edit-category>
+    </div>
+</div>
